@@ -1,0 +1,49 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
+
+namespace QueueApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //string value = String.Join(" ",args);
+            //SendArticleAsync(value).Wait();
+            //Console.WriteLine($"Sent : {value}");
+            string value = ReceiveArticleAsync().Result;
+            Console.WriteLine($"Receieved {value}");
+        }
+        static async Task<string> ReceiveArticleAsync(){
+            CloudQueue queue = GetQueue();
+            bool exists = await queue.ExistsAsync();
+            if(exists){
+                CloudQueueMessage retrievedArticle = await queue.GetMessageAsync();
+                if(retrievedArticle!=null){
+                    string newsMessage = retrievedArticle.AsString;
+                    await queue.DeleteMessageAsync(retrievedArticle);
+                    return newsMessage;
+                }
+            }
+            return "[queue empty or queue not created]";
+        }
+        static CloudQueue GetQueue(){
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=srikantstorageaccount;AccountKey=aFq+oVFqxf0Fbf9ybqkym7h4xjbybaOh7xHaiKJKYB8nK/54erWOoZCCIBgzSFQSwczyhrj04W3bIVjVqXuA1Q==;EndpointSuffix=core.windows.net";
+            CloudStorageAccount account = CloudStorageAccount.Parse(connectionString);   
+            CloudQueueClient client = account.CreateCloudQueueClient();
+            return client.GetQueueReference("newsqueue");           
+        }
+        static async Task SendArticleAsync(string newsMessage){
+            CloudQueue queue = GetQueue();
+
+            bool createdQueue = await queue.CreateIfNotExistsAsync();
+            if(createdQueue){
+                Console.WriteLine("The queue of news article was created..");
+            }
+            CloudQueueMessage articleMessage = new CloudQueueMessage(newsMessage);
+            await queue.AddMessageAsync(articleMessage);
+
+        }
+    }
+}

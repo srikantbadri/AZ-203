@@ -1,0 +1,34 @@
+Create Cosmos DB:
+ 
+az cosmosdb create --name $NAME \
+    --kind GlobalDocumentDB \
+    --resource-group Learn-601f46a0-47dc-4433-a740-babfe798a635
+
+Create Products Database:
+ 
+az cosmosdb database create --name $NAME \
+    --db-name "Products" \
+    --resource-group Learn-601f46a0-47dc-4433-a740-babfe798a635
+
+Create Clothing Container:
+
+az cosmosdb collection create \
+    --name $NAME \
+    --db-name "Products" \
+    --collection-name "Clothing" \
+    --partition-key-path "/productId" \
+    --throughput 1000 \
+    --resource-group Learn-601f46a0-47dc-4433-a740-babfe798a635
+
+With geo-redundant storage, data in the secondary region is not readable unless an outage causes Azure to fail-over to that region. Under normal circumstances, all clients must connect to the primary region to access data.
+
+Differences between Azure Storage tables and Azure Cosmos DB tables
+
+There are some differences in behavior between Azure Storage tables and Azure Cosmos DB tables to remember if you are considering a migration. For example:
+
+    You are charged for the capacity of an Azure Cosmos DB table as soon as it is created, even if that capacity isn't used. This charging structure is because Azure Cosmos DB uses a reserved-capacity model to ensure that clients can read data within 10 ms. In Azure Storage tables, you are only charged for used capacity, but read access is only guaranteed within 10 seconds.
+    Query results from Azure Cosmos DB are not sorted in order of partition key and row key as they are from Storage tables.
+    Row keys in Azure Cosmos DB are limited to 255 bytes.
+    Batch operations are limited to 2 MBs.
+    Cross-Origin Resource Sharing (CORS) is not currently supported by Azure Cosmos DB.
+    Table names are case-sensitive in Azure Cosmos DB. They are not case-sensitive in Storage tables.

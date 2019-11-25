@@ -1,0 +1,442 @@
+Cosmos DB
+- if miliions of transactions/users involved use this in place of StorageAccount
+API Options:
+-SQL COre
+-MongoDB
+-Cassandra
+-Azure Table
+-Graph
+
+______________________________________________________________
+Consistency
+-strong
+-bounded staleness(delay between the data is written and the same data is read )
+-session
+-consistent prefix
+-eventual(weakest one, no ordering guarantee)
+
+________________________________________
+Section 15:
+Data necryption & Storage Accounts
+-encrypt using default storage account key or make your own key, go to your key vault, and make storgae account use that key
+-keyvalut(Standard (cheap few cents)& PRemium)
+-keys
+-secret: store application secrets in keyvault, store api secrets also
+-certificates(generate/import)
+______________________________________________________
+Section 17:
+Redis Caching:
+-low latency, 
+fetch from in-memory rather than db
+-location close to your application users.
+-basic, standard, premium
+-StackExchange.Redis package NuGet better than official Redis Package
+-redis- backend type of cache
+-cdn - content delivery network
+	-audio,video,css
+	-store them on other server other than web server
+	-static content
+	-reduces bureden on web server.
+	-Verizon, Akamai, Microsoft -- available vendors for CDN
+
+
+____________________________________________________________________
+-----Azure Batch
+
+
+
+__________________________________
+Section 16:
+Scaling Apps
+-scale up section in app service
+-scale out section
+   --select no of instances, copies of the application
+-manual scale
+-auto scale not supported in basic tier
+-auto scaling(production tier)
+  --Prod level tier
+  --auto scale upto 10 instances --S1 tier
+  --auto scale based on some condition
+   -- like cpu percentage > 70 increase instance count by 1
+   -- cpu < 20 % scale down instance count by 1
+
+--Scaling VM
+  --load balancer vm scale sets
+  --select scale set name
+  --select instance count
+  --vm scale sets supports upto 1000 vms(instance count)
+
+
+
+  --placement group upto 100 vm can be there
+  --select autoscale condition, you can set autoscale based upon time
+  --
+
+--Scaling a single vm(other than vm scale set)
+  --
+--Load Balancer
+_____________________________________________________________________
+Section 4
+-Containerized solutions
+-kuberenetes:
+  --open source sw
+  -- provieds deployment, scaling out and managing containerized apps.
+  --better than docker
+  -- used for container orchestation(coordinations)
+  --
+-some features of vm and some features of app service
+-you cannot deploy same app service from azure to aws
+- but you can use same aks from azure to aws(advantage)
+
+
+AKS:
+while creating AKS:
+  --cluster name
+  --region
+  --kuebernetes version
+  --DNS name prefix
+  --node size
+  --count of nodes
+
+
+Deploy AKS cluster:
+ --cmd:
+connect to cluster
+az aks get-credentials  --resource-group rgName --name clusterName 
+to look at nodes cmd:
+kubectl get nodes
+dir ---> one yaml files
+yaml file-- yet another markup language
+it contains info about where to take the img(frontend and backend service) and deploy
+-make changes to yaml files
+-push deployment to the cluster nodes:
+kubectl apply -f azure-vot.yaml
+get details of service in the cluster:
+kubectl get service
+
+--Docker Compose Up:::
+1)git clone of azure voting app from github
+2)docker-compose up -d  docker-compose.yml
+builds the program downloaded from git , makes it a working program, starting the program
+3)docker container ls
+--list of files
+4)docker-machine ip Default
+--Ip Address
+5)docker-compose down
+-stop this application from running in the local
+
+--Azure Container Registry(ACR)
+-creating container registry in azure
+-CR. : location where we can store our docker images
+-after working program in local, we can push it to CR on azure
+1)Registry Name
+2)Subscription: Pay as You Go
+3)RG
+4)Location
+5)SKU
+Basic, Standard and Premium
+cmd: docker images   ----> TO get the name of images which are present in the conatiner.
+docker tag name-of-the-image     azsjd.azurecr.io/name-of-the-container:v1
+                                 name or link of ACR
+Push it to azsjd ACR:
+docker push azsjd.azurecr.io/azure-vote-front:v1
+--docker image will be sitting azure CR repositories section
+
+
+
+______________________________________________________
+Logic App:
+-kind of connector of azure services
+-no custom code
+-lot of templates
+-based on calender, remainer email
+-slack/twitter
+-fb/dropbox
+-send notification/email
+-triggers: 
+   -timer/when called-http request/monitoring a email account /
+-actions:
+   -create a file in blob/create a file in dropbox
+    - run a pipeline
+
+
+
+Azure Search:
+-search solution, we can use in our application
+-search millions of document and create a index
+-URL, Subs, RG, Location, Pricing Tier
+  Free, Basic, Standard
+
+
+API Management
+-security at frontend in front of API's
+-connects to backend apis
+-provides security
+-put limits to the api
+-reports
+-management tool, that sits in front of our apis
+Setup:
+-Name :FQ
+-Subscription
+-RG
+-Location
+-Organization Name
+-Admin Email
+-Pricing Tier:
+ -Developer/Basic/Standard/Premium/Consumption Plan
+
+Configuration:
+-See Quick Start
+  :-create and test you api
+   -set api policies
+   -version your api
+   -monitor your api
+-In Products Section, add product, to create different levels:private/public/beta testing level
+-APIS section:
+ -Blank API, Open API, XML Logic App, Function App, API app in app service
+ -set access to your created level in product section
+ -example --- backend:logic app, General Public access, restriction: set headers, set version/revision level
+ -set inbound policies, set ip limit,
+
+
+Event Grid/Event Hub:
+-
+  
+
+
+
+_________________________________________________
+App Service
+-Iaas
+-
+
+
+
+__________________________________________________
+Mobile Apps Azure
+-Notification Hubs:
+  -sending notifications to phones
+  -send to individuals/groups of individuals
+  Setup of notification hub:
+  -Name of the notification hub
+  -New Namespace
+  -Location
+  -RG
+  -Subscription
+  -Tier : Free/basic/Standard
+  -Free :  1M Notifications & 500 Devices
+  -Basic : 10M Notification & 200k Devices
+  -Standard : 10M & 10M devices - Scheduled Push
+  
+  Create a mobile app:
+  -Settings: Data connections
+  -select SQL Database/Storage account
+  -Database requires a server in azure
+  -connecting sql db to mobile app
+  -use db to store backend of our mobile app
+ 
+
+   Easy Tables and Push Notifications:
+   -Easy Table section
+   -Name, Insert Permission, Updates, Delete, Permissions to anyone/ authenticate request
+   -You can add from CSV
+   -
+   -Push Section(Push Notification)
+   :connect to a notification hub
+   -
+
+
+______________________________________________________
+Azure VM
+-Iaas
+-SSH or RDP to control machine
+-vcpu - virtual cpu
+-Public Ip Address present
+-
+3 Prices:
+1)Pay as you go
+2)1 year estimate(if you want it to use for 1 year)
+3)3 year estimate(Less charge per month)
+Charged for:
+1)VM costs
+2)HDD costs, you can take extra hard drive
+3)Storage transactions cost
+
+Create your first VM:
+1)VM is not running, you wont be charged for vm
+2)but storage charges will still apply
+-VM Name
+-Region
+-availability option
+-Image: Windows Server/Ubuntu/any OS
+-Admin account:
+   username n password, these will be the rdp login credentials
+-Public inbound ports: allow RDP,allow Http/Https
+-Networking section:
+	-subnet
+	-Security settings
+        -Accelerated networking, some vms doesnt support this
+-Management:
+	-Enable auto shutdown, if you are not gonna use it
+	-Enable backup
+-Review & Create
+-deployment might take upto 5 min or more for creation
+
+
+Connect to vm through RDP:
+1)While creating a VM all these resources would be created:
+	-Disk
+	-Network Interface
+	-Network Security Group
+	-Public Ip address
+	-Virtual machine
+	-Virtual Network(This can be same for multiple vms)
+2)Configuration:
+ -Set a DNS name to access your vm(giving a FQN)
+ -
+
+
+Troubleshooting a RDP COnnection:
+-Restart when rdp not able to connect
+-subnets section: Security Group to have firewalls in vm(check this options while trouble shooting)
+-networking tab: add port 3389 to inbound port rules to connect to rdp
+
+
+
+Add a web role to windows server
+
+
+
+ARM Template
+- 		 
+
+
+______________________________________________________________________________
+Azure Service Bus vs Storage Queue
+
+Key advantages of Service Bus queues include:
+
+    Supports larger messages size (256 KB per message versus 64 KB)
+    Supports both at-least-once and at-most-once delivery - choose between a very small chance that a message is lost or a very small chance it is handled twice
+    Guarantees first-in-first-out (FIFO) order - messages are handled in the same order they are added (although FIFO is the normal operation of a queue, it is not guaranteed for every message)
+    Can group multiple messages into a transaction - if one message in the transaction fails to be delivered, all messages in the transaction will not be delivered
+    Supports role-based security
+    Does not require destination components to continuously poll the queue
+
+Advantages of storage queues:
+
+    Supports unlimited queue size (versus 80-GB limit for Service Bus queues)
+    Maintains a log of all messages
+
+
+to display the primary connection string for your Service Bus namespace.:
+
+az servicebus namespace authorization-rule keys list \
+    --resource-group Learn-6fcafe6b-cd2c-4670-955d-73b86b5dd03b \
+    --name RootManageSharedAccessKey \
+    --query primaryConnectionString \
+    --output tsv \
+    --namespace-name salesteamappsrikant16sept
+
+Endpoint=sb://salesteamappsrikant16sept.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SJxtY/jN13inIuypLeRNlMtx7nvFxeYbJyHPHTBkXIk=
+
+
+
+TO see no of messages in the queue:
+az servicebus queue show \
+    --resource-group Learn-6fcafe6b-cd2c-4670-955d-73b86b5dd03b \
+    --name salesmessages \
+    --query messageCount \
+    --namespace-name salesteamappsrikant16sept
+
+
+_________________________________________________________________________
+Azure Storage Queue
+When you create a storage account that will contain queues, you should consider the following settings:
+
+-    Queues are only available as part of Azure general-purpose storage accounts (v1 or v2). You cannot add them to Blob storage accounts.
+
+-    The Access tier setting which is shown for StorageV2 accounts applies only to Blob storage and does not affect queues.
+
+-    You should choose a location that is close to either the source components or destination components or (preferably) both.
+
+-    Data is always replicated to multiple servers to guard against disk failures and other hardware problems. You have a choice of replication strategies: Locally Redundant Storage (LRS) is low-cost but vulnerable to disasters that affect an entire data center while Geo-Redundant Storage (GRS) replicates data to other Azure data centers. Choose the replication strategy that meets your redundancy needs.
+
+-    The performance tier determines how your message are stored: Standard uses magnetic drives while Premium uses solid-state drives. Choose Standard if you expect peaks in demand to be short. Consider Premium if queue length sometimes becomes long and you need to minimize the time to access messages.
+
+-    Require secure transfer if sensitive information may pass through the queue. This setting ensures that all connections to the queue are encrypted using Secure Sockets Layer (SSL).
+
+
+Command to create storage account: 
+
+Use the az storage account create command to create the storage account. You can type the command into the Cloud Shell window on the right.
+
+The command needs several parameters:
+Parameter 	Value
+--name 	Sets the name. Remember that storage accounts use the name to generate a public URL - so it has to be unique. In addition, the account name must be between 3 and 24 characters, and be composed of numbers and lowercase letters only. We recommend you use the prefix articles with a random number suffix but you can use whatever you like.
+-g 	Supplies the Resource Group, use Learn-e1f667ad-e8a6-41ae-ac6d-ce72e7f1d4e5 as the value.
+--kind 	Sets the Storage Account type - use StorageV2 to create a general-purpose V2 account.
+--sku 	Sets the Replication and Storage type, it defaults to Standard_RAGRS. Let's use Standard_LRS which means it's only locally redundant within the data center.
+-l 	Sets the Location independent of the resource group owner. It's optional, but you can use it to place the queue in a different region than the resource group. Place it close to you, choosing from the below list of available regions in the sandbox.
+
+
+
+
+________________________________________________________________________________________
+Azure Event Hub
+
+Azure Event Hubs is a cloud-based, event-processing service that's capable of receiving and processing millions of events per second. Event Hubs acts as a front door for an event pipeline, where it receives incoming data and stores it until processing resources are available.
+
+-Pricing
+There are three pricing tiers for Azure Event Hubs: Basic, Standard, and Dedicated. The tiers differ in terms of supported connections, number of available Consumer groups, and throughput. When using Azure CLI to create an Event Hubs namespace, if you don't specify a pricing tier, the default of Standard (20 Consumer groups, 1000 Brokered connections) is assigned.
+
+-Event subscribers are applications that use one of two supported programmatic methods to receive and process events from an Event Hub.
+:EventHubReceiver - A simple method that provides limited management options.
+:EventProcessorHost - An efficient method that we’ll use later in this module.
+
+
+
+Create a namespace CLI:
+az eventhubs namespace create --name $NS_NAME
+(Resource Group & Location are set to default)
+
+Get connection string of the namespace:
+az eventhubs namespace authorization-rule keys list --name RootManageSharedAccessKey --namespace-name $NS_NAME
+
+
+Create an event hub:
+az eventhubs eventhub create --name $HUB_NAME --namespace-name $NS_NAME
+
+View details of event hub:
+az eventhubs eventhub show --namespace-name $NS_NAME --name $HUB_NAME
+
+
+
+The following parameters are required to create an Event Hub:
+
+Event Hub name - Event Hub name that is unique within your subscription and:
+        Is between 1 and 50 characters long
+        Contains only letters, numbers, periods, hyphens, and underscores
+        Starts and ends with a letter or number
+
+Partition Count - The number of partitions required in an Event Hub (between 2 and 32). This should be directly related to the expected number of concurrent consumers. This cannot be changed after the hub has been created. The partition separates the message stream, so that consumer or receiver applications only need to read a specific subset of the data stream. If not defined, this defaults to 4.
+
+Message Retention - The number of days (between 1 and 7) that messages will remain available, if the data stream needs to be replayed for any reason. If not defined, this defaults to 7.
+
+
+
+
+
+
+
+_________________________________________________________________________________________________________________________
+-Azure Virtual Machine: 
+
+Here are some guidelines based on the scenario you are targeting
+What are you doing? 	Consider these sizes
+General use computing/web: Testing and development, small to medium databases, or low to medium traffic web servers. 	B, Dsv3, Dv3, DSv2, Dv2
+Heavy computational tasks: Medium traffic web servers, network appliances, batch processes, and application servers. 	Fsv2, Fs, F
+Large memory usage: Relational database servers, medium to large caches, and in-memory analytics. 	Esv3, Ev3, M, GS, G, DSv2, Dv2
+Data storage and processing: Big data, SQL, and NoSQL databases that need high disk throughput and I/O. 	Ls
+Heavy graphics rendering or video editing, as well as model training and inferencing (ND) with deep learning. 	NV, NC, NCv2, NCv3, ND
+High-performance computing (HPC): Your workloads need the fastest and most powerful CPU virtual machines with optional high-throughput network interfaces. 	H
