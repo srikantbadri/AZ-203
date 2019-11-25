@@ -1,4 +1,4 @@
-### Cosmos DB
+Cosmos DB
 - if miliions of transactions/users involved use this in place of StorageAccount
 API Options:
 -SQL COre
