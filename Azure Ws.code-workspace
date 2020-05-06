@@ -1,0 +1,41 @@
+{
+	"folders": [
+		{
+			"path": "Key_Vault"
+		},
+		{
+			"path": "KeyVaultMSI"
+		},
+		{
+			"path": "Azure SQL"
+		},
+		{
+			"path": "Azure_Search"
+		},
+		{
+			"path": "Azure_VM"
+		},
+		{
+			"path": "BlobStorage"
+		},
+		{
+			"path": "EventHub"
+		},
+		{
+			"path": "QueueApp"
+		},
+		{
+			"path": "Redis_Cache"
+		},
+		{
+			"path": "ServiceBusApp"
+		},
+		{
+			"path": "Table_Storage"
+		},
+		{
+			"path": "ApplicationInsights"
+		}
+	],
+	"settings": {}
+}
